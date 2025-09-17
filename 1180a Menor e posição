@@ -1,0 +1,34 @@
+#include <stdio.h>
+
+int main(){
+    int n, i, menor, posicao;
+    
+    scanf("%d", &n);
+
+    int X[n];
+    
+    for (i=0; i<n; i++){
+        scanf("%d", &X[i]);
+    }
+    
+    menor = X[0];
+    posicao = 0;
+    
+    if (n > 1 && n < 1000){
+        for (i=1; i<n; i++){
+            if (menor > X[i]){
+                menor = X[i];
+                posicao = i;
+            }
+        }
+    }
+    else {
+        return 1;
+    }
+
+    printf("Menor valor: %d\n", menor);
+    printf("Posicao: %d\n", posicao);  
+
+
+    return 0;
+}
