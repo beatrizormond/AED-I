@@ -1,0 +1,105 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int Analisa_sudoku(int **sudoku){
+    int valor = 0, i, j, k, i2, j2;
+
+    int *conta = (int *) malloc(10 * sizeof(int));
+    if (conta == NULL){
+        return 2;
+    }
+
+    for (i=0; i<9;i++){  //analisa as linhas da matriz 9x9
+        for (k = 1; k <= 9; k++){ conta[k] = 0;}
+        for (j=0; j<9; j++){
+            if (sudoku[i][j] >= 1 && sudoku[i][j] <= 9){
+                valor = sudoku[i][j];
+                if(conta[valor]){
+                    free(conta);
+                    return 0;
+                }
+                else{
+                    conta[valor] = 1;
+                }
+            }
+        }
+    }
+
+    for (i=0; i<9;i++){ //analisa as colunas da matriz 9x9
+        for (k=1; k<=9; k++){ conta[k] = 0;}
+        for (j=0; j<9; j++){
+            if (sudoku[j][i] >= 1 && sudoku[j][i] <= 9){
+                valor = sudoku[j][i];
+                if (conta[valor]){
+                    free(conta);
+                    return 0;
+                }
+                else{
+                    conta[valor] = 1;
+                }
+            }
+        }
+    }
+
+    for (i2 = 0; i2 < 9; i2 += 3){ //analisa cada matriz 3x3 dentro da matriz 9x9
+        for (j2 = 0; j2 <9; j2 += 3){
+            for (k=1; k<=9; k++){ conta[k] = 0;}
+            for (i=0; i<3;i++){
+                for (j=0; j<3; j++){
+                    if (sudoku[i+i2][j+j2] >= 1 && sudoku[i+i2][j+j2] <= 9){
+                        valor = sudoku[i+i2][j+j2];
+                        if (conta[valor]){
+                            free(conta);
+                            return 0;
+                        }
+                        else{
+                            conta[valor] = 1;
+                        }
+                    }
+                }
+            }
+        }           
+    }
+
+    free(conta);
+
+return 1;
+}
+
+int main (){
+    int n, i, j, x;
+    
+    scanf("%d", &n);
+
+    int **sudoku = (int **) malloc(9 * sizeof(int*));   
+    
+    if(sudoku == NULL){
+        return 1;
+    }
+
+    for (i = 0; i < 9; i++){
+        sudoku[i] = (int *) malloc(9 * sizeof(int));
+    }
+
+    for (x=1; x <= n; x++){
+        for (i = 0; i < 9; i++){
+            for (j = 0; j < 9; j++){
+                scanf("%d", &sudoku[i][j]);
+            }
+        }
+    
+        if (Analisa_sudoku(sudoku)){
+            printf("Instancia %d\nSIM\n\n", x);   
+        }
+        else {
+            printf("Instancia %d\nNAO\n\n", x);
+        }   
+    }
+
+    for(i=0; i < 9; i++){
+        free(sudoku[i]);
+    }
+    free(sudoku);
+
+    return 0;
+}
