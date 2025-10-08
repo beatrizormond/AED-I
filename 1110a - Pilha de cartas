@@ -1,0 +1,83 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct cel { 
+	int conteudo;
+	struct cel *seg; 
+} celula;
+
+int Desempilha(celula **topo) { //descarta a carta do topo e retorna seu valor
+	int d;
+	celula *lixo;
+	lixo = *topo;
+	d = lixo->conteudo;
+	*topo = lixo->seg;
+	free(lixo);
+
+	return d;
+}
+
+void Enfilera(celula **topo, int y){
+    celula *p;
+    celula *nova = malloc(sizeof(celula));
+    nova->conteudo = y;
+    nova->seg = NULL;
+    
+    if(*topo == NULL){ //se a fila estiver vazia ela recebe nova como primeiro elemento
+        *topo = nova;
+    }
+    else {
+        for(p = *topo; p->seg != NULL;){ // o ponteiro p percorre até o ultimo elemento para adicionar a carta no fim da fila
+            p = p->seg;
+        }
+        p->seg = nova;
+    }
+    
+}
+
+int main () {
+	int n, i, j;
+	
+    
+	while (scanf("%d", &n), n !=0 && n<=50){
+            
+        int tam = 0, remanescente;
+        int *descarte = malloc(n* sizeof(int));
+	    celula *topo = NULL;
+	        
+    	for (i=1; i<=n; i++) {
+    		Enfilera(&topo, i); 
+    	}
+    	
+    	for (j=0; topo!=NULL && topo->seg != NULL; j++) {
+    
+    		descarte[j] = Desempilha(&topo);
+    		tam++;
+    
+    		if(topo!=NULL) {
+    			Enfilera(&topo, Desempilha(&topo));
+    		}
+    	}
+    	if(topo){
+    		    remanescente = topo->conteudo;
+    		    free(topo);
+    		}
+
+    	printf("Cartas descartadas: ");
+    	for (i=0; i<tam; i++) {
+    		if(i==tam-1){
+    			printf("%d", descarte[i]);
+    		}
+    		else{
+    			printf("%d, ", descarte[i]);
+    		}
+    	}
+    
+    	printf("\nCarta restante: %d\n", remanescente);
+	 
+	    free(descarte);
+	
+	}
+
+	return 0;
+}
