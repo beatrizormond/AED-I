@@ -62,6 +62,7 @@ void In(arvore r, int n){
     if (pos > 0){
         fwrite(buffer + 1, sizeof(char), pos - 1, stdout);
     }
+    printf("\n");
     free(p);
 }
 
