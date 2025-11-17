@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct cel {
+    int conteudo;
+    int chave;
+    struct cel *dir;
+    struct cel *esq;
+};
+
+typedef struct cel nodo;
+typedef nodo *arvore;
+
+void Insere(arvore *r, nodo *novo){
+    nodo *f, *p;
+    if (*r == NULL){
+        *r = novo;
+        (*r)->dir = NULL;
+        (*r)->esq = NULL;
+        return;
+    }
+    
+    f = *r;
+    
+    while (f!= NULL){
+        p = f;
+        if (f->chave > novo->chave){
+            f = f->esq;
+        }
+        else{
+            f = f->dir;
+        }
+    }
+    if (p->chave > novo->chave){
+        p->esq = novo;
+    }
+    else {
+        p->dir = novo;
+    }
+}
+
+void Pre(arvore r){
+    if(r != NULL){
+        printf(" %d", r->chave);
+        Pre(r->esq);
+        Pre(r->dir);
+    }
+}
+
+void In(arvore r){
+    if(r != NULL){
+        In(r->esq);
+        printf(" %d", r->chave);
+        In(r->dir);
+    }
+}
+
+void Pos(arvore r){
+    if(r!= NULL){
+        Pos(r->esq);
+        Pos(r->dir);
+        printf(" %d", r->chave);
+    }
+}
+
+int main (){
+    int c, n, num, i, j;
+    arvore r = NULL;
+
+    scanf("%d", &c);
+
+    for(i=0; i<c; i++){
+        r = NULL;
+        scanf("%d", &n);
+        for (j=0; j<n; j++){
+            scanf("%d", &num);
+            nodo *novo;
+            novo = malloc(sizeof(nodo));
+            novo->chave = num;
+            Insere(&r, novo);
+        }
+
+        printf("Case %d:\n", i + 1);
+        printf("Pre.:");
+        Pre(r);
+        printf("\nIn..:");
+        In(r);
+        printf("\nPost:");
+        Pos(r);
+        printf("\n\n");
+        
+    }
+
+    return 0;
+}
