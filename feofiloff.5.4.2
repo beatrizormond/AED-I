@@ -1,0 +1,45 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct cel {
+    int conteudo;
+    struct cel *seg;
+} celula;
+
+void Enfileira(int x, celula *head){
+    celula *nova = malloc(sizeof(celula));
+    celula *p;
+
+    nova->conteudo = x;
+    nova ->seg = head;
+
+    if (head->seg == head){
+            head->seg = nova;
+            return;
+    }
+
+    for(p = head->seg; p->seg != head; p = p->seg);
+    
+    p->seg = nova;
+    nova->seg = head;
+ 
+}
+
+int main (){
+    celula head, *p;
+    int x;
+    head.seg = &head;
+    
+    //fila = &head;
+    
+    for( int i = 0; i <10; i++){
+        //scanf("%d", &x);
+        x = 10;
+        Enfileira (x, &head); 
+    }
+    for(p = head.seg; p != &head; p = p->seg){
+        printf("%d ", p->conteudo);
+    }
+
+    return 0;
+}
