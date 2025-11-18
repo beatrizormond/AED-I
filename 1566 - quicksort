@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int Quick (int inicio, int fim, int v[]){
+    int pivo, j, k, t;
+    pivo = v[fim];
+    j = inicio;
+
+    for (k = inicio; k < fim; k++){
+        if (v[k] <= pivo){
+            t = v[j];
+            v[j] = v[k];
+            v[k] = t;
+            j++;
+        }
+    }
+    v[fim] = v[j];
+    v[j] = pivo;
+    return j;
+}
+
+void QuickSort (int inicio, int fim, int v[]){
+    int j;
+    if (inicio < fim){
+        j = Quick(inicio, fim, v);
+        QuickSort(inicio, j-1, v);
+        QuickSort(j+1, fim, v);
+    }
+}
+
+int main() {
+int h, nc, n, i, j;
+int *v, *w;
+
+	scanf("%d", &nc);
+	if(nc < 100) {
+		for (j = 0; j<nc; j++) {
+			scanf("%d", &n);
+			if(n > 1 && n < 3000000) {
+				v = malloc(n * sizeof(int));
+				for (i=0; i<n; i++) {
+					scanf("%d", &h);
+					if(h>=20 && h<=230) {
+						v[i] = h;
+					}
+				}
+				QuickSort(0, n-1, v);
+
+				int primeiro = 1;
+
+				for (i=0; i< n; i++) {
+					if(primeiro) {
+						printf("%d", v[i]);
+						primeiro = 0;
+					}
+					else {
+						printf(" %d", v[i]);
+					}
+				}
+				printf("\n");
+
+        free(v);
+			}
+		}
+	}
+
+	return 0;
+}
