@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void Merge(int inicio, int meio, int fim, int v[], int w[]) {
+	int i, j, k;
+
+	i = inicio;
+	j = meio;
+	k = inicio;
+
+	while (i < meio && j < fim) {
+		if (v[i] <= v[j]) {
+			w[k++] = v[i++];
+		}
+		else {
+			w[k++] = v[j++];
+		}
+	}
+	while (i < meio) {
+		w[k++] = v[i++];
+	}
+	while (j < fim) {
+		w[k++] = v[j++];
+	}
+	for (i = inicio; i < fim; i++) {
+		v[i] = w[i];
+	}
+
+}
+
+void Mergesort(int inicio, int fim, int v[], int w[]) {
+	if (inicio < fim-1) {
+		int meio = (inicio + fim)/2;
+		Mergesort (inicio, meio, v, w);
+		Mergesort (meio, fim, v, w);
+		Merge (inicio, meio, fim, v, w);
+	}
+}
+
+int main() {
+	int h, nc, n, i, j;
+	int *v, *w;
+
+	scanf("%d", &nc);
+	if(nc < 100) {
+		for (j = 0; j<nc; j++) {
+			scanf("%d", &n);
+			if(n > 1 && n < 3000000) {
+				v = malloc(n * sizeof(int));
+				w = malloc(n * sizeof(int));
+				for (i=0; i<n; i++) {
+					scanf("%d", &h);
+					if(h>=20 && h<=230) {
+						v[i] = h;
+					}
+				}
+				Mergesort(0, n, v, w);
+
+				int primeiro = 1;
+
+				for (i=0; i< n; i++) {
+					if(primeiro) {
+						printf("%d", v[i]);
+						primeiro = 0;
+					}
+					else {
+						printf(" %d", v[i]);
+					}
+				}
+				printf("\n");
+			}
+		}
+
+	}
+
+	return 0;
+}
