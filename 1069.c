@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct cel {
+	char conteudo;
+	struct cel *seg;
+} celula;
+
+void Empilha (char y, celula *pilha) {
+	celula *nova = malloc(sizeof(celula));
+
+	nova->conteudo = y;
+	nova->seg = pilha->seg;
+	pilha->seg = nova;
+}
+
+int Desempilha (celula *pilha) {
+	if(pilha->seg == NULL) {
+		return 0;
+	}
+	celula *lixo;
+
+	lixo = pilha->seg;
+	pilha->seg = lixo->seg;
+	free(lixo);
+
+	return 1;
+}
+
+void Limpa(celula *pilha) {
+	while(pilha->seg != NULL) {
+		Desempilha(pilha);
+	}
+}
+
+int main() {
+	int n, val, i, j;
+	char expressao[1000];
+    
+	scanf("%d", &n);
+    getchar();
+
+	for (i=0; i<n; i++) {
+		fgets(expressao, 1000, stdin);
+        expressao[strcspn(expressao, "\n")] = '\0';
+
+		celula *pilha = malloc(sizeof(celula));
+		pilha->seg = NULL;
+
+		val = 0;
+		
+		for(j=0; j<strlen(expressao); j++) {
+			if(expressao[j] == '<') {
+				Empilha(expressao[j], pilha);
+			}
+			if(expressao[j] == '>') {
+				if(Desempilha(pilha)) {
+					val++;
+				}
+			}
+		}
+        printf("%d\n", val);
+		Limpa(pilha);
+		free(pilha);
+		
+    
+	}
+		
+	return 0;
+}
